@@ -3,7 +3,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping(path="api/product")
 
 public class ProductController {
-	private final ProductRepository productRepository;
+	private final ProductService productService;
 	@Autowired
-	public ProductController(ProductRepository productRepository)
+	public ProductController(ProductService productService)
 	{
 		
-		this.productRepository=productRepository;
+		this.productService=productService;
 	}
 	
 	
 	
 	@GetMapping
 	public List<Product> getProducts() {
-		return productRepository.findAll();
+		return productService.getProducts();
 		
 	}
 	@PutMapping("/{productId}/updateStock")
@@ -36,37 +36,29 @@ public class ProductController {
             @PathVariable Long productId,
             @RequestBody UpdateStockRequest request
     ) {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
-
-        if (optionalProduct.isPresent()) {
-            Product product = optionalProduct.get();
-            product.setStock(request.getNewStockValue()+product.getStock());
-            productRepository.save(product);
-            return ResponseEntity.ok("Stock updated successfully.");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return productService.updateProductStock(productId, request);
     }
 	@PutMapping("/{productId}/DecreaseStock")
     public ResponseEntity<String> DecreaseProductStock(
             @PathVariable Long productId
            
     ) {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
-
-        if (optionalProduct.isPresent()) {
-            Product product = optionalProduct.get();
-            if(product.getStock()<1)
-            {
-            	return ResponseEntity.badRequest().body("Product is out of stock.");
-            }
-            product.setStock(product.getStock()-1);
-            productRepository.save(product);
-            return ResponseEntity.ok("Stock updated successfully.");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return productService.DecreaseProductStock(productId);
     }
+	@PutMapping("/{productId}/raisePrice")
+	public ResponseEntity<String> raisePrice(
+			@PathVariable Long productId,
+			@RequestBody RaisePriceRequest request)
+	{
+		return productService.RaisePrice(productId, request);
+	}
+	@PutMapping("/{productId}/discountPrice")
+	public ResponseEntity<String>discountPrice(
+			@PathVariable Long productId,
+			@RequestBody DiscountPriceRequest request)
+	{
+		return productService.discountPrice(productId, request);
+	}
 	
 	
 
