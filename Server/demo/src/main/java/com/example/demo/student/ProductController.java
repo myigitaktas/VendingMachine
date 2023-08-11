@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping(path="api/product")
+@RequestMapping(path="api/v1/product")
 
 public class ProductController {
 	private final ProductService productService;
@@ -31,34 +31,37 @@ public class ProductController {
 		return productService.getProducts();
 		
 	}
-	@PutMapping("/{productId}/updateStock")
-    public ResponseEntity<String> updateProductStock(
-            @PathVariable Long productId,
-            @RequestBody UpdateStockRequest request
-    ) {
-        return productService.updateProductStock(productId, request);
-    }
-	@PutMapping("/{productId}/DecreaseStock")
-    public ResponseEntity<String> DecreaseProductStock(
-            @PathVariable Long productId
-           
-    ) {
-        return productService.DecreaseProductStock(productId);
-    }
-	@PutMapping("/{productId}/raisePrice")
-	public ResponseEntity<String> raisePrice(
+	@PutMapping("/{productId}/stocks")
+	public ResponseEntity<String> updateStock(
 			@PathVariable Long productId,
-			@RequestBody RaisePriceRequest request)
+			@RequestBody UpdateStockRequest request)
 	{
-		return productService.RaisePrice(productId, request);
+		if(request.getTransaction())
+		{
+			return productService.decreaseProductStock(productId);
+		}
+		else
+		{
+			return productService.increaseProductStock(productId, request);
+		}
+		
 	}
-	@PutMapping("/{productId}/discountPrice")
-	public ResponseEntity<String>discountPrice(
+	@PutMapping("/{productId}/prices")
+	public ResponseEntity<String> updatePrice(
 			@PathVariable Long productId,
-			@RequestBody DiscountPriceRequest request)
+			@RequestBody PriceRequest request)
 	{
-		return productService.discountPrice(productId, request);
+		if(request.isRaise())
+		{
+			return productService.raisePrice(productId, request);
+		}
+		else
+		{
+			return productService.discountPrice(productId, request);
+		}
 	}
+	
+	
 	
 	
 

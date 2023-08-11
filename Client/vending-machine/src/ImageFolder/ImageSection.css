@@ -1,0 +1,12 @@
+/* ImageSection.css */
+.image-section {
+    display: flex;
+    align-items: center;
+  }
+  
+  .image-section img {
+    width: 100px; /* Adjust the width as needed */
+    height: auto;
+    margin-right: 10px; /* Add spacing between images */
+  }
+  

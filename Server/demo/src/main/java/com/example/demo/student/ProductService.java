@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class ProductService {
 		return productRepository.findAll();
 				
 	}
-	public ResponseEntity<String> updateProductStock(
+	public ResponseEntity<String> increaseProductStock(
              Long productId,
              UpdateStockRequest request
     ) {
@@ -32,10 +33,11 @@ public class ProductService {
             productRepository.save(product);
             return ResponseEntity.ok("Stocking operation completed successfully.");
         } else {
-            return ResponseEntity.notFound().build();
+        	String errorMessage = "Product with ID " + productId + " not found.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
         }
     }
-	public ResponseEntity<String> DecreaseProductStock(
+	public ResponseEntity<String> decreaseProductStock(
              Long productId
            
     ) {
@@ -51,40 +53,44 @@ public class ProductService {
             productRepository.save(product);
             return ResponseEntity.ok("Transaction completed successfully.");
         } else {
-            return ResponseEntity.notFound().build();
+        	String errorMessage = "Product with ID " + productId + " not found.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
         }
     }
-	public ResponseEntity<String> RaisePrice(
+	public ResponseEntity<String> raisePrice(
 		    Long productId,
-		    RaisePriceRequest request
+		    PriceRequest request
 		) {
 		    Optional<Product> optionalProduct = productRepository.findById(productId);
 		    if (optionalProduct.isPresent()) {
 		        Product product = optionalProduct.get();
-		        double percentage = (double) request.getRaisePercentage() / 100;
+		        double percentage = (double) request.getPriceDouble() / 100;
 		        double newPrice = product.getPrice() * (1 + percentage);
 		        product.setPrice(newPrice);
 		        productRepository.save(product);
 		        return ResponseEntity.ok("Raise operation completed successfully.");
 		    } else {
-		        return ResponseEntity.notFound().build();
+		    	String errorMessage = "Product with ID " + productId + " not found.";
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
 		    }
 		}
 	
 	public ResponseEntity<String> discountPrice(
 		    Long productId,
-		    DiscountPriceRequest request
+		    PriceRequest request
 		) {
 		    Optional<Product> optionalProduct = productRepository.findById(productId);
 		    if (optionalProduct.isPresent()) {
 		        Product product = optionalProduct.get();
-		        double percentage = (double) request.getDiscountPercentage() / 100;
+		        double percentage = (double) request.getPriceDouble() / 100;
 		        double newPrice = product.getPrice() * (1 - percentage);
 		        product.setPrice(newPrice);
 		        productRepository.save(product);
-		        return ResponseEntity.ok("Discount operation  completedsuccessfully.");
+		        return ResponseEntity.ok("Discount operation  completed successfully.");
 		    } else {
-		        return ResponseEntity.notFound().build();
+		    	String errorMessage = "Product with ID " + productId + " not found.";
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+		        
 		    }
 		}
 
