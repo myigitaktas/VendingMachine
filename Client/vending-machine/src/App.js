@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CustomerPage from './Customer'; 
 import SupplierPage from './Supplier';
-import ImageSection from './ImageFolder/ImageSection'; // Import the ImageSection component
+import ImageSection from './ImageFolder/ImageSection'; 
 import './App.css';
 
 function App() {
@@ -14,11 +14,11 @@ function App() {
             <h2>Customer Interface</h2>
           </div>
           <div className="title">
-            {/* Add content for the second title if needed */}
+            {}
           </div>
         </div>
 
-        <ImageSection /> {/* Include the ImageSection component here */}
+        <ImageSection /> {}
         
         <Routes>
           <Route path="/customer" element={<CustomerPage />} />

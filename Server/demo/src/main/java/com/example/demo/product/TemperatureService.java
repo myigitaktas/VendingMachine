@@ -12,15 +12,15 @@ public class TemperatureService {
     public TemperatureService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-    @Scheduled(fixedRate = 60000) // Schedule to run every 30 seconds
-    @Transactional // To ensure proper transaction management
+    @Scheduled(fixedRate = 60000) // Schedule to run every 60 seconds
+    @Transactional 
     public void updateRandomProductColdField() {
         List<Product> products = productRepository.findAll();
         
         if (!products.isEmpty()) {
             int randomIndex = new Random().nextInt(products.size());
             Product randomProduct = products.get(randomIndex);
-            randomProduct.setCold(0); // Set the "cold" field to 0
+            randomProduct.setCold(0); 
             productRepository.save(randomProduct);
         }
     }
