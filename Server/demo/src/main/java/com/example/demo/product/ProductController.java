@@ -1,4 +1,5 @@
-package com.example.demo.student;
+package com.example.demo.product;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,6 +37,10 @@ public class ProductController {
 			@PathVariable Long productId,
 			@RequestBody UpdateStockRequest request)
 	{
+		if(request.getTransaction()==null||request.getNewStockValue()==null)
+		{
+			return ResponseEntity.badRequest().body("JSON body lacks required fields");
+		}
 		if(request.getTransaction())
 		{
 			return productService.decreaseProductStock(productId);
@@ -51,6 +56,10 @@ public class ProductController {
 			@PathVariable Long productId,
 			@RequestBody PriceRequest request)
 	{
+		if(request.getPrice()==null)
+		{
+			return ResponseEntity.badRequest().body("JSON body lacks required fields");
+		}
 		if(request.isRaise())
 		{
 			return productService.raisePrice(productId, request);

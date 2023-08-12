@@ -1,6 +1,5 @@
-package com.example.demo.student;
 
-public class PriceRequest {
+class PriceRequest {
 	private String price;
 
 	public String getPrice() {

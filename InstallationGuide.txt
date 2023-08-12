@@ -1,0 +1,42 @@
+Welcome to Vending Machine Installation Guide
+-Firstly, make sure that you clone the project from GitHub to your computer
+-Only the back-end and the database connection of this project works, the frontend doesn't work.
+-From your IDE, find Maven interface and select Import Existing Maven Project,from there select the server folder of this project.
+-This project is implemented to run locally so use an existing Database Software(such as Dbeaver) and create a new database, note down credentials, database URL.
+-Create a table in the database using the SQL script:
+CREATE TABLE product (
+    id bigserial PRIMARY KEY,
+    price float8,
+    stock int4,
+    base_64 varchar(255),
+    name varchar(255),
+    cold int4
+);
+-Add 3 products to the table by using the SQL script, run the script for each part
+INSERT INTO product (name, stock, base_64, price,cold)
+VALUES ('Water', 15, 'base64data1', 25.0 , 1);
+
+INSERT INTO product (name, stock, base_64, price,cold)
+VALUES ('Coke', 8, 'base64data2', 35.0 , 1);
+
+INSERT INTO product (name, stock, base_64, price,cold)
+VALUES ('Soda', 14, 'base64data3', 45.0 , 1);
+-Now  find application.resources in the resources folder, change the fields in the file such as database url or username/password etc. to your database information
+-If you've completed all the steps so far successfuly, you can run DemoApplication.java file that is inside the com.example.demo package. Make sure that your runtime JRE is suitable for this project, I recommend running with Java 20
+-Now that the server is up and running, you can use tools like Postman to simulate requests from the client and see the changes in the database that those requests made.
+-Here are two example queries you can send:
+1-)Select PUT method,enter the url as http://localhost:8080/api/v1/product/1/prices and in the body part below, choose JSON and select raw field,
+in the field write 
+{
+    "price":"+100" 
+}
+and send it
+2-)Select PUT method,enter the url as http://localhost:8080/api/v1/product/2/stocks and in the body part below, choose JSON and select raw field,
+in the field write
+{
+    "newStockValue":20,
+    "transaction":false
+}
+and send it
+Support mail: memetak13@gmail.com
+

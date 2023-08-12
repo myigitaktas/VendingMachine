@@ -1,8 +1,10 @@
-package com.example.demo.student;
+package com.example.demo.product;
 
 public class UpdateStockRequest {
 	private Integer newStockValue;
 	private Boolean transaction;
+	
+	
 	public Integer getNewStockValue()
 	{
 		return newStockValue;

@@ -1,4 +1,5 @@
-package com.example.demo.student;
+package com.example.demo.product;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
